@@ -5,9 +5,7 @@ module Fastlane
         UI.message "I am Getting the latest bash script from Codecov.io"
         sh "curl -s -N https://Codecov.io/bash > #{ENV['PWD']}/codecov_reporter.sh"
 
-        params[:token] ||= false
-
-        if params[:token] != false
+        if !params[:token].nil?
           UI.message "It looks like I'm working with a private repository"
           sh "bash #{ENV['PWD']}/codecov_reporter.sh -K -t #{params[:token]}"
         else
@@ -40,8 +38,8 @@ module Fastlane
           FastlaneCore::ConfigItem.new(key: :token,
                                        env_name: "CODECOV_TOKEN",
                                        description: "Codecov.io private repo token",
-                                       is_string: true,
-                                       default_value: false)
+                                       type: String,
+                                       optional: true)
         ]
       end
 
